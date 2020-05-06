@@ -42,12 +42,23 @@ def player(board):
       return X
 
 
-
 def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
+
+    i represents the board row, j the board column, both 0, 1 or 2
+
+    The actions are are represented as the tuple (i, j) where the piece can be placed.
     """
-    raise NotImplementedError
+
+    moves = set()
+
+    for i in range(3):
+      for j in range(3):
+        if board[i][j] == EMPTY:
+          moves.add((i, j))
+
+    return moves
 
 
 def result(board, action):
