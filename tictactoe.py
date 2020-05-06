@@ -10,19 +10,37 @@ EMPTY = None
 
 
 def initial_state():
-    """
-    Returns starting state of the board.
-    """
-    return [[EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY]]
+  """
+  Returns starting state of the board.
+  """
+  return [[EMPTY, EMPTY, EMPTY],
+          [EMPTY, EMPTY, EMPTY],
+          [EMPTY, EMPTY, EMPTY]]
 
 
 def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    raise NotImplementedError
+    # Scan board for entries and determine next player:
+
+    X_count = 0
+    O_count = 0
+    EMPTY_count = 0
+
+    for row in board:
+      X_count += row.count(X)
+      O_count += row.count(O)
+      EMPTY_count += row.count(EMPTY)
+
+    # If X has more squares than O, its O's turn:
+    if X_count > O_count:
+      return O
+
+    # Otherwise it is X's turn:
+    else:
+      return X
+
 
 
 def actions(board):
