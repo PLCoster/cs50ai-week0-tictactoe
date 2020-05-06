@@ -3,6 +3,8 @@ Tic Tac Toe Player
 """
 
 import math
+from custom_errors import InvalidActionError
+from copy import deepcopy
 
 X = "X"
 O = "O"
@@ -65,7 +67,20 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    raise NotImplementedError
+    i = action[0]
+    j = action[1]
+
+    # Check move is valid:
+    if i not in [0, 1, 2] or j not in [0, 1, 2]:
+      raise InvalidActionError(action, board, 'Result function given an invalid board position for action: ')
+    elif board[i][j] != EMPTY:
+      raise InvalidActionError(action, board, 'Result function tried to perform invalid action on occupaied tile: ')
+
+    # Make a deep copy of the board and update with the current player's move:
+    board_copy = deepcopy(board)
+    board_copy[i][j] = player(board)
+
+    return board_copy
 
 
 def winner(board):

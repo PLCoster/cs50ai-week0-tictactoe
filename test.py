@@ -1,23 +1,17 @@
-from tictactoe import player, actions
+from tictactoe import player, actions, result
+from custom_errors import InvalidActionError
+from copy import deepcopy
 
-EMPTY = "EMPTY"
+EMPTY = None
 O = "O"
 X = "X"
 
-board = [[X, X, X],
-          [X, X, EMPTY],
-          [X, X, EMPTY]]
+board = [[EMPTY, EMPTY, EMPTY],
+          [X, EMPTY, O],
+          [EMPTY, EMPTY, EMPTY]]
 
-print(player(board))
+action = (1,0)
 
-moves = set()
+print(result(board, action))
 
-for i in range(3):
-  print(i)
-  for j in range(3):
-    print(j)
-    if board[i][j] == EMPTY:
-      print('board position', i, j, 'is :', board[i][j])
-      moves.add((i, j))
 
-print(moves)
