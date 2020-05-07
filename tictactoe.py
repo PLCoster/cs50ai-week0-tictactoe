@@ -152,6 +152,7 @@ def utility(board):
 
 actions_explored = 0
 
+
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
