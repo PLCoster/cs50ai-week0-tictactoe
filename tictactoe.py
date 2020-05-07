@@ -162,8 +162,12 @@ def minimax(board):
     global actions_explored
     actions_explored = 0
 
-    def max_player(board):
-      """ Helper function to maximise score for 'X' player """
+    def max_player(board, best_min = 10):
+      """ Helper function to maximise score for 'X' player.
+          Uses alpha-beta pruning to reduce the state space explored.
+          best_min is the best result
+      """
+
       global actions_explored
 
       # If the game is over, return board value
@@ -174,8 +178,13 @@ def minimax(board):
       value = -10
       best_action = None
       for action in actions(board):
+        # A-B Pruning skips calls to min_player if lower result already found:
+
+        if best_min <= value:
+          continue
+
         actions_explored += 1
-        min_player_result = min_player(result(board, action))
+        min_player_result = min_player(result(board, action), value)
         if min_player_result[0] > value:
           best_action = action
           value = min_player_result[0]
@@ -183,7 +192,7 @@ def minimax(board):
       return (value, best_action)
 
 
-    def min_player(board):
+    def min_player(board, best_max = -10):
       """ Helper function to minimise score for 'O' player """
 
       global actions_explored
@@ -192,12 +201,17 @@ def minimax(board):
       if terminal(board):
         return (utility(board), None)
 
-      # Else pick the action giving the max value when min_player plays optimally
+      # Else pick the action giving the min value when max_player plays optimally
       value = 10
       best_action = None
       for action in actions(board):
+        # A-B Pruning skips calls to max_player if lower result already found:
+
+        if best_max >= value:
+          continue
+
         actions_explored += 1
-        max_player_result = max_player(result(board, action))
+        max_player_result = max_player(result(board, action), value)
         if max_player_result[0] < value:
           best_action = action
           value = max_player_result[0]
@@ -210,10 +224,12 @@ def minimax(board):
       return None
 
     if player(board) == 'X':
+      print('AI is exploring possible actions...')
       best_move = max_player(board)[1]
       print('Actions explored by AI: ', actions_explored)
       return best_move
     else:
+      print('AI is exploring possible actions...')
       best_move = min_player(board)[1]
       print('Actions explored by AI: ', actions_explored)
       return best_move
