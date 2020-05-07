@@ -87,7 +87,42 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    raise NotImplementedError
+
+    # Check rows:
+    for row in board:
+      if row.count(X) == 3:
+        return X
+      if row.count(O) == 3:
+        return O
+
+    # Check columns:
+    for j in range(3):
+      column = ''
+      for i in range(3):
+        column += str(board[i][j])
+
+      if column == 'XXX':
+        return X
+      if column == 'OOO':
+        return O
+
+    # Check Diagonals:
+    diag1 = ''
+    diag2 = ''
+    j = 2
+
+    for i in range(3):
+      diag1 += str(board[i][i])
+      diag2 += str(board[i][j])
+      j -= 1
+
+    if diag1 == 'XXX' or diag2 == 'XXX':
+      return X
+    elif diag1 == 'OOO' or diag2 == 'XXX':
+      return O
+
+    # Otherwise no current winner, return None
+    return None
 
 
 def terminal(board):
