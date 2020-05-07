@@ -3,6 +3,7 @@ Tic Tac Toe Player
 """
 
 import math
+import random
 from custom_errors import InvalidActionError
 from copy import deepcopy
 
@@ -177,19 +178,22 @@ def minimax(board):
 
       # Else pick the action giving the max value when min_player plays optimally
       value = -10
-      best_action = None
+      best_actions = []
       for action in actions(board):
         # A-B Pruning skips calls to min_player if lower result already found:
-        if best_min <= value:
+        if best_min < value:
           continue
 
         actions_explored += 1
         min_player_result = min_player(result(board, action), value)
         if min_player_result[0] > value:
-          best_action = action
+          best_actions = []
+          best_actions.append(action)
           value = min_player_result[0]
+        elif min_player_result[0] == value:
+          best_actions.append(action)
 
-      return (value, best_action)
+      return (value, random.choice(best_actions))
 
 
     def min_player(board, best_max = -10):
@@ -203,19 +207,23 @@ def minimax(board):
 
       # Else pick the action giving the min value when max_player plays optimally
       value = 10
-      best_action = None
+      best_actions = []
       for action in actions(board):
         # A-B Pruning skips calls to max_player if higher result already found:
-        if best_max >= value:
+        if best_max > value:
           continue
 
         actions_explored += 1
         max_player_result = max_player(result(board, action), value)
         if max_player_result[0] < value:
-          best_action = action
+          best_actions = []
+          best_actions.append(action)
           value = max_player_result[0]
+        elif max_player_result[0] == value:
+          best_actions.append(action)
 
-      return (value, best_action)
+
+      return (value, random.choice(best_actions))
 
 
     # If the board is terminal, return None:
