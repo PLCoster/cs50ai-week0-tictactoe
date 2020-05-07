@@ -180,7 +180,6 @@ def minimax(board):
       best_action = None
       for action in actions(board):
         # A-B Pruning skips calls to min_player if lower result already found:
-
         if best_min <= value:
           continue
 
@@ -206,8 +205,7 @@ def minimax(board):
       value = 10
       best_action = None
       for action in actions(board):
-        # A-B Pruning skips calls to max_player if lower result already found:
-
+        # A-B Pruning skips calls to max_player if higher result already found:
         if best_max >= value:
           continue
 
