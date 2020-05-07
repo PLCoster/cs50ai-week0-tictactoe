@@ -129,7 +129,12 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    raise NotImplementedError
+    # Game is over if it is a winning board or all tiles are full (no actions):
+
+    if winner(board) or not actions(board):
+      return True
+    else:
+      return False
 
 
 def utility(board):
