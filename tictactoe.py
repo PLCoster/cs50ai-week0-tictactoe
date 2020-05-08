@@ -178,22 +178,27 @@ def minimax(board):
 
       # Else pick the action giving the max value when min_player plays optimally
       value = -10
-      best_actions = []
-      for action in actions(board):
+      best_action = None
+
+
+      # Get set of actions and then select a random one until list is empty:
+      action_set = actions(board)
+
+      while len(action_set) > 0:
+        action = random.choice(tuple(action_set))
+        action_set.remove(action)
+
         # A-B Pruning skips calls to min_player if lower result already found:
-        if best_min < value:
-          continue
+        if best_min <= value:
+          break
 
         actions_explored += 1
         min_player_result = min_player(result(board, action), value)
         if min_player_result[0] > value:
-          best_actions = []
-          best_actions.append(action)
+          best_action = action
           value = min_player_result[0]
-        elif min_player_result[0] == value:
-          best_actions.append(action)
 
-      return (value, random.choice(best_actions))
+      return (value, best_action)
 
 
     def min_player(board, best_max = -10):
@@ -207,23 +212,26 @@ def minimax(board):
 
       # Else pick the action giving the min value when max_player plays optimally
       value = 10
-      best_actions = []
-      for action in actions(board):
+      best_action = None
+
+      # Get set of actions and then select a random one until list is empty:
+      action_set = actions(board)
+
+      while len(action_set) > 0:
+        action = random.choice(tuple(action_set))
+        action_set.remove(action)
+
         # A-B Pruning skips calls to max_player if higher result already found:
-        if best_max > value:
-          continue
+        if best_max >= value:
+          break
 
         actions_explored += 1
         max_player_result = max_player(result(board, action), value)
         if max_player_result[0] < value:
-          best_actions = []
-          best_actions.append(action)
+          best_action = action
           value = max_player_result[0]
-        elif max_player_result[0] == value:
-          best_actions.append(action)
 
-
-      return (value, random.choice(best_actions))
+      return (value, best_action)
 
 
     # If the board is terminal, return None:
